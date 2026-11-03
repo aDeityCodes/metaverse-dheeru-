@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+/* =========================================================
+   DESIGN TOKENS
+   Colors come straight from the game map: teal floor tiles,
+   wooden rooms, the mustard rug and the brick-red sofa.
+========================================================= */
+
+@theme {
+  --font-display: "Pixelify Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Rubik", ui-sans-serif, system-ui, sans-serif;
+
+  --color-night: #0d2321;
+  --color-deep: #12302d;
+  --color-panel: #173b38;
+  --color-line: #245450;
+  --color-floor: #2f8f84;
+  --color-wood: #704333;
+  --color-mustard: #e9bf45;
+  --color-mustard-dark: #a98219;
+  --color-brick: #e0664c;
+  --color-sky: #6b9de0;
+  --color-paper: #f4ecd6;
+  --color-mist: #a3c2bc;
+}
+
+@layer base {
+  html {
+    background: var(--color-night);
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100dvh;
+  }
+
+  #root {
+    min-height: 100dvh;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-mustard);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-mustard);
+    color: var(--color-night);
+  }
+}
+
+@layer components {
+  /* Chunky game-style buttons that physically press down */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.75rem;
+    padding: 0 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    transition: transform 70ms ease, box-shadow 70ms ease, background-color 120ms ease;
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background: var(--color-mustard);
+    color: var(--color-night);
+    box-shadow: 0 4px 0 var(--color-mustard-dark);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: #f3cc5a;
+  }
+
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--color-mustard-dark);
+  }
+
+  .btn-quiet {
+    background: transparent;
+    color: var(--color-paper);
+    box-shadow: inset 0 0 0 2px var(--color-line);
+  }
+
+  .btn-quiet:hover:not(:disabled) {
+    background: var(--color-deep);
+  }
+
+  .btn-quiet:active:not(:disabled) {
+    transform: translateY(2px);
+  }
+
+  .kbd {
+    display: inline-flex;
+    min-width: 1.6rem;
+    height: 1.6rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.35rem;
+    border-radius: 5px;
+    background: var(--color-panel);
+    box-shadow: 0 2px 0 var(--color-line);
+    color: var(--color-paper);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  /* Checkerboard floor, same as the in-game tiles */
+  .tile-floor {
+    background-color: #2f8f84;
+    background-image:
+      linear-gradient(45deg, #2b857a 25%, transparent 25%, transparent 75%, #2b857a 75%),
+      linear-gradient(45deg, #2b857a 25%, transparent 25%, transparent 75%, #2b857a 75%);
+    background-size: 48px 48px;
+    background-position: 0 0, 24px 24px;
+  }
+
+  .touch-only {
+    display: none;
+  }
+
+  @media (pointer: coarse) {
+    .touch-only {
+      display: grid;
+    }
+  }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes blink-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.anim-bob { animation: bob 1.6s ease-in-out infinite; }
+.anim-blink { animation: blink-dot 1.2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
