@@ -14,14 +14,20 @@ app.use((req, res, next) => {
     "https://metaverse-game-ten.vercel.app",
   ];
 
+  const allowedSuffixes = [
+    "-sdeepanshu7s-projects.vercel.app",
+    "-adityasinghnehra-8669.vercel.app",
+  ];
+
   const origin = req.headers.origin;
 
   if (
     origin &&
     (allowedOrigins.includes(origin) ||
-      origin.endsWith("-sdeepanshu7s-projects.vercel.app"))
+      allowedSuffixes.some((suffix) => origin.endsWith(suffix)))
   ) {
     res.header("Access-Control-Allow-Origin", origin);
+    res.header("Vary", "Origin");
   }
 
   res.header(
